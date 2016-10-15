@@ -1,0 +1,306 @@
+%% HOW TO USE THIS TEMPLATE:
+%%
+%% Ensure that you replace "YOUR NAME HERE" with your own name, in the
+%% \studentname command below.  Also ensure that the "answers" option
+%% appears within the square brackets of the \documentclass command,
+%% otherwise latex will suppress your solutions when compiling.
+%% 
+%% Type your solution to each problem part within
+%% the \begin{mysolution} \end{mysolution} environment immediately
+%% following it.  Use any of the macros or notation from the
+%% header.tex that you need, or use your own (but try to stay
+%% consistent with the notation used in the problem).
+%%
+%% If you have problems compiling this file, you may lack the
+%% header.tex file (available on the course web page), or your system
+%% may lack some LaTeX packages.  The "exam" package (required) is
+%% available at:
+%%
+%% http://mirror.ctan.org/macros/latex/contrib/exam/exam.cls
+%%
+%% Other packages can be found at ctan.org, or you may just comment
+%% them out (only the exam and ams* packages are absolutely required).
+
+
+% the "answers" option causes the solutions to be printed
+%\documentclass[11pt,addpoints]{exam}
+\documentclass[11pt,addpoints,answers]{exam}
+
+
+% required macros -- get header.tex file from course web page
+\input{header}
+
+%\input{hw0sol}
+
+% VARIABLES
+
+\newcommand{\hwnum}{0}
+\newcommand{\duedate}{Sep 12} % changing this does not change the
+                                % actual due date :)
+\newcommand{\studentname}{YOUR NAME HERE}
+
+% END OF SUPPLIED VARIABLES
+
+\hwheader                       % execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\duetext
+
+\instructionstext
+
+% QUESTIONS START HERE.  PROVIDE SOLUTIONS WITHIN THE "solution"
+% ENVIRONMENTS FOLLOWING EACH QUESTION.
+
+\begin{questions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \question
+	Send email to
+  Oded (\texttt{regev} at \texttt{cims}) with subject \texttt{CSCI-GA 3210
+    student} containing (1) a few sentences about yourself and your
+  background (including your department, graduate program, how long in program), and (2) your comfort level
+  with the following: mathematical proofs, elementary probability
+  theory, big-O notation and analysis of algorithms, Turing machines,
+  and $\P$, $\BPP$, $\NP$, and $\NP$-completeness.  Please also
+  mention any courses you've taken covering these topics.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \question
+	\emph{(Working with negligible functions.\footnote{Based on a question from Peikert's class\label{fn:peikert}})}  Recall that a
+  non-negative function $\nu : \N \to \R$ is \emph{negligible} if it
+  decreases faster than the inverse of any polynomial (otherwise, we
+  say that $\nu$ is \emph{non-negligible}).  More precisely, $\nu(n) =
+  o(n^{-c})$ for every fixed constant $c > 0$, or equivalently,
+  $\lim_{n \to \infty} \nu(n) \cdot n^{c} = 0$. 
+
+  State whether each of the following functions is negligible or
+  non-negligible, and give a brief justification.  In the following,
+  $\negl(n)$ denotes some arbitrary negligible function, and
+  $\poly(n)$ denotes some arbitrary polynomial in $n$.
+	(If you are not comfortable with these notion, read Section 4.2 of Lecture 2
+	in Peikert's notes)
+
+  \begin{parts}
+    \part[1] $\nu(n) = 1/2^{100 \log n}$.
+
+    \begin{mysolution}{negligiblefuncsa}
+      First we consider the limit 
+      $\lim_{n \to \infty} \frac{x^c}{e^{100log(n)}} = $
+      $ \lim_{n \to \infty} \frac{x^c}{n^{100}}$
+	   for $c>100$, this limit diverges to $+ \infty$. 
+	   Since $\lim_{n \to \infty} \frac{x^c}{e^{100log(n)}} < \lim_{n \to \infty} \frac{x^c}{2^{100log(n)}}$,
+	   we have that $\lim_{n \to \infty} \nu(n) \cdot n^{c} = +\infty$.
+	   Therefore the function is not negligible.
+          \end{mysolution}
+
+    \part[1] $\nu(n) = n^{-\log \log \log n}$.  \hfill {\small
+      (Compare with the previous item for ``reasonable'' values of
+      $n$.)}
+
+    \begin{mysolution}{negligiblefuncsb}
+      for any c, we can pick $N_c  = e^{e^{e^{c}}}$ 
+      so that $x^{- log log log x}<x^{-c} \hspace{2 mm} \forall x>N_c $, 
+      satisfying the analytic definition of a negligible function. Therefore the function is negligible.
+    \end{mysolution}
+
+    \part[1] $\nu(n) = \poly(n) \cdot \negl(n)$. \hfill {\small (State
+      whether $\nu$ is \emph{always} negligible, or not necessarily.)}
+
+    \begin{mysolution}{negligiblefuncsc}
+   Since $\negl(n)$ is negligible, we have that 
+   $lim_{x \to \infty} \negl(n) \cdot x^c = 0 \hspace{2 mm} \forall c>0$
+   The limit of the product $ \poly(n) \cdot \negl(n)$ can be written as
+   $ \lim_{x \to \infty}  \sum\limits_{i=0}^k \alpha_i x^i * x^c * \negl(x)$
+   $ =\sum\limits_{i=0}^k \alpha_i \lim_{x \to \infty} x^{i+c} * \negl(x).$
+   Since each term in the summation is 0 due to the negligibility of $\negl(n)$, the whole limit is 0.
+   Therefore, $\poly(n) \cdot \negl(n)$ is also negligible.
+    \end{mysolution}
+
+    \part[1] $\nu(n) = (\negl(n))^{1/\poly(n)}$. \hfill {\small (Same
+      instructions as previous item.)}
+	
+	
+	
+    \begin{mysolution}{negligiblefuncsd}
+      Assume that $\poly(x)$ is a polynomial of finite degree but with degree at least 1, whose highest order coefficient is positive. 
+	Then we can write
+	$lim_{x \to \infty} \negl(x) ^ {\frac{1}{\poly(x)}} x^c = (lim_{x \to \infty} \negl(x)  x^{c \poly(x)})^{\frac{1}{\poly(x)}}$
+	Now, since $ c \poly(x)$ is a positive number for large x  
+	$lim_{x \to \infty} \negl(x)  x^{c \poly(x)} = 0$.
+	Since the limit inside the exponent is 0 and the exponent is positive, the entire limit must be 0. 
+	Therefore, for polynomials with the above conditions, the function is negligible. If the polynomial diverges to $- \infty$ then the function is not negligible; if the polynomial is constant, it is negligible only when it is identically 0, and for the case of polynomials of infinite degree (which may be the series representation of any analytic function), the result may or may not be negligible.
+    \end{mysolution}
+
+    \part[1] \[ \nu(n) =
+    \begin{cases}
+      2^{-n} & \text{if $n$ is composite} \\
+      100^{-100} & \text{if $n$ is prime.}
+     
+    \end{cases}
+    \]
+    
+    \begin{mysolution}{negligiblefuncse}
+      Suppose that for any c, we could find a value of $x = N_c$ such that $\nu(x)<\frac{1}{x^c} \forall x>N_c$
+      We know that for any such $N_c$  there is always a prime number $p>N_c$, and we can pick p such that $p>100$. Suppose also that c=100.
+      Then $\nu(p) = 100^{-100} > p^{-c}$, contradicting our assumption that no such $x>N_c$ exists. Thus $\nu(x)$ is not negligible. 
+    \end{mysolution}
+
+  \end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\question
+	\emph{(Statistical distance.)}
+	Recall that given two distributions over a (finite) set $\Omega$, their statistical distance (also known as variational or $L_1$ distance) 
+	is defined as 
+	\[
+	  \Delta(X,Y) := \frac{1}{2} \sum_{\omega \in \Omega} |X(\omega)-Y(\omega)| \; .
+	\]
+  \begin{parts}
+
+    \part[3] Show that $\Delta$ defines a metric (see \href{https://en.wikipedia.org/wiki/Metric_(mathematics)#Definition}{here} for the definition). 
+		\begin{mysolution}{statdista}
+      We can see that the statistical distance is never negative because the summand is non-negative due the presence of absolute value signs. To show that $\Delta(X,Y)=0 -> X=Y$, suppose that $\exists a \in \Omega | X(a) != Y(a)$ Then the summand is positive, and with no negative values to compensate, the sum itself is positive, contradicting our assumption. Symmetry is clearly upheld by the absoute value sign in the summand. To show subadditivity of the triangle inequality, we can simply fix a, and note that $\abs{X(a) - Y(a)} \leq \abs{X(a) - Z(a)} +\abs{Z(a) - Y(a)}$ by the triangle inequality for real numbers. Since this is true for each term in the summand, it must also be true for the entire sum. Therefore all four conditions for being a metric are satisfied by $\Delta(X,Y)$. 
+    \end{mysolution}
+
+    \part[3] Show that the following is an equivalent definition:
+	\[
+	  \Delta(X,Y) := \sup_{A \subseteq \Omega} |X(A)-Y(A)| \; ,
+	\]
+	where $X(A)$ denotes the probability of $X$ to be in $A$, and similarly for $Y(A)$.
+	Give an ``operational'' interpretation to this definition (i.e., in terms of an algorithm trying to 
+	distinguish $X$ and $Y$).
+		\begin{mysolution}{statdistb}
+      We car rewrite this alternative definition as 
+      $  \sup_{A \subseteq \Omega} | \sum_{\omega \in A} X(\omega)-\sum_{\omega \in A} Y(\omega) |$
+      By the triangle inequality, we have that 
+      $| \sum_{\omega \in A} X(\omega)-\sum_{\omega \in A} Y(\omega) | \leq \sum_{\omega \in A} |X(\omega)- Y(\omega)|$
+      with equality holding when the rank ordering of $X(\omega)$ and $Y(\omega)$ are the same  $\forall \omega \in A$.
+      This hints at the fact that the choice of A which maximizes this expression is the set $A^* = {\omega \in A : X(\omega) >Y(\omega)}$
+      Note also that this sum is the same if we choose $A^{*c}$ to be our set, so that $ |X(A^*)-Y(A^*)|  + |X(A^{*c})-Y(A^{*c})| =2 |X(A^*)-Y(A^*)|= \sum_{\omega \in A^*} |X(\omega)- Y(\omega)|+ \sum_{\omega \in A^{*c}} |X(\omega)- Y(\omega)| =  \sum_{\omega \in \Omega} |X(\omega)- Y(\omega)|$.
+      Rearranging terms, we get  $|X(A^*)-Y(A^*)| =  \frac{1}{2} \sum_{\omega \in \Omega} |X(\omega)-Y(\omega)|$, proving the desired equivalence. In order to implement this as an algorithm, we could add some efficiency by only making a single subtraction at the end, rather than subtracting the probabilities for every element of $\Omega$. To do this we simply maintain two separate sums $S_x$ and $S_y$. As we search trhough each element of $\Omega$ we simply check whether $X(\omega)>Y(\omega)$, and if it is, we add $X(\omega)$ to $S_x$ and add $Y(\omega)$ to $S_y$, otherwise doing nothing. When we have iterated through all possible events, we simply take the difference $S_x-S_y$ in order to find $\Delta(X,Y)$ with only a single subtraction operation. (Note that while we have to make additional comparison operations, this is compensated by the fact that we never have to take the absolute value).
+    \end{mysolution}
+
+    \part[3] 
+		Let $D_0$ and $D_1$ be two distributions over the same support $\Omega$. 
+		Suppose that we play the following game with an algorithm $\Adv$. First, we pick at random a bit $b\gets\bit$ and then we pick $x\gets D_b$ and we give $x$ to $\Adv$. Finally, $\Adv$ returns a bit $\Adv(x)$. It wins if the bit returned is equal to $b$. 
+		Show that the highest success probability in this game is exactly $\frac{1}{2}+\frac{1}{2}\Delta(D_0,D_1)$.
+		\begin{mysolution}{statdistc}
+      If we consider a bayesian approach, we can imagine that there is some event $\omega$ that could have come from distribution $D_0$ or distribution $D_1$ with a prior probability of $\frac{1}{2}$
+ 	 that it came from either one. If we assume perfect knowledge of both distributions, a perfect algorithm would output 0  whenever $D_0(\omega)>D_1(\omega)$, and vice versa. Then for any given event $\omega$, we can use Baye's formula to conclude that the probability of guessing correctly is 
+ 	 $\frac{1}{2} \frac{D_0(\omega)}{D_0(\omega)+D_1(\omega)}$, assuming that
+ 	  $D_0(\omega)>D_1(\omega)$.
+ 	  If we wan to take an average of this success probability, we must weight by the probability that the event occurrs in the first place, $D_0(\omega)+D_1(\omega)$.
+ 	   Thus our average success probability can be written as 
+ 	$S=\frac{1}{2} \sum_{\omega \in A^*} x+\frac{1}{2} \sum_{\omega \in A^{*c}} y$
+ 	$=\frac{1}{2} \sum_{\omega \in A^*} x-y +\frac{1}{2} \sum_{\omega \in A^*} y +\frac{1}{2} \sum_{\omega \in A^{*c}} y $
+ 	$= \frac{1}{2} \sum_{\omega \in A^*} x-y +\frac{1}{2} \sum_{\omega \in \Omega} y =  \frac{1}{2} \Delta(D_0,D_1) +  \frac{1}{2}$
+    \end{mysolution}
+ 	
+\end{parts}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \question[6](Pairwise independence) Assume that $r_1,\ldots,r_t$ are independent uniform strings in $\{0,1\}^n$. 
+	 Show that the collection of all $2^t-1$ nontrivial XORs, $\{\bigoplus_{i \in S} r_i\}_{\emptyset \neq S \subset [t]}$
+	 is pairwise independent, i.e., any two of them are jointly distributed like an independent uniform
+	pair of strings in $\{0,1\}^n$. 
+    \begin{mysolution}{solpairwiseindep}
+      For any given output of the XOR operation, there are $2^n$ possible pairs of input strings that could have produced it, since for each digit, if the result is 0, the strings could have both had a 0 or a 1, and if the result is 1, one of the input strings had a 0 and the other had a 1, in either order. Since the probability of picking a given pair that is uniformly distributed is $2^{-2n}$, the probability of a given XOR result is $\frac{2^n}{2^{2n}} = \frac{1}{2^n}$. Thus the distribution of XOR results is the same as that of the input strings; namely, a uniform distribution.
+    \end{mysolution}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\question
+	\emph{(Large deviation bounds.)}
+Assume that $X_1,\ldots,X_n$ are independent identically distributed (i.i.d.) random variables, each taking $1$ with probability $p$ and $0$ with probability $1-p$. Recall that Chernoff's bound says that for all $\eps>0$,
+		\[
+		  \Pr \Big[ \Big| \frac{1}{n} \sum_i X_i - p \Big| > \eps \Big] \le 2 e^{-2 n \eps^2} \; .
+		\]
+	  If you are rusty on Chernoff's bound, read about it, e.g., \href{www.cs.berkeley.edu/~sinclair/cs271/n13.pdf}{here} or search Google; there are lots of forms of the bound, the above being the most convenient for our applications.
+		
+\begin{parts}
+    \part[2] 		
+		How large should $n$ be if we want the average of the $X_i$ to be within $\pm \eps$ of $p$ with probability at least $1-\delta$? (asymptotic expression for $n$ is enough)
+		\begin{mysolution}{chernoffa}      
+		We can easily see from the defintiion that the limiting case happens when 
+		$\delta = 2 e^{-2 n \eps^2}$.
+		Solving for n, we find that the limiting value of n occurrs when $n = \frac{-1}{2 \eps^2} log(\frac{\gamma}{2})$.
+		
+    \end{mysolution}
+
+    \part[3] 		
+    Imagine we used Chebyshev's bound instead of Chernoff's, and if you wish, assume for simplicity that $p=1/2$. What bound on $n$ would you get then? Do you see any advantage of Chebyshev's bound over Chernoff's?  
+
+		\begin{mysolution}{chernoffb}
+		Chebyshev's inequality tells us that $P[X-\mu|<k \sigma] \leq \frac{1}{k^2}$, or equivalently, $P[|X-\mu|< \eps ] \leq \frac{\sigma^2}{\eps^2}$.
+		Now if we define $X = \frac{1}{n} \sum_{i} X_i$, using the fact that $p=\frac{1}{2}$ we have from the central limit theorem that $\sigma^2 = \frac{1}{4n}$.  
+		Now we have the limiting case and can solve for n:
+		$n = \frac{1}{4 (1-\delta) (\eps^2)}$
+		You should use Chebyshev's inequality when p is small, and Chernoff's bounds when p is large. Plotting on wolfram alpha shows that the point above which Chernoff's bounds become more advantageous occurrs at roughly p=0.6.
+    \end{mysolution}
+		
+\end{parts}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+  \question
+	\emph{(Error-correcting codes (optional, no credit).)} This is a bit off topic, but
+	will give you an idea of the kind of math we use in this course. 
+	It will also give you a glimpse to an immensely important topic that also dates back to Shannon's seminal work. These ideas are used in pretty much 
+	all digital communication protocols: cell phones, Internet, satellites, etc.
+	
+  \begin{parts}
+    \part Assume we choose $2^{n/20}$ strings from the set $\{0,1\}^n$ uniformly at random. Show that with positive probability (in fact, high probability)
+		the Hamming distance (i.e., number of different coordinates) between \emph{any} two strings in the set is more than $n/4$. 
+\hint{84542}
+		
+    \begin{mysolution}{ecca}
+      
+    \end{mysolution}
+
+    \part Show how Alice can communicate to Bob a message of $k$ bits by sending only $n=20k$ bits in such a way that Bob can recover the message even if an adversary flips up to $n/8$ bits of the communication. Would simply repeating the message 20 times be good enough?
+		
+    \begin{mysolution}{eccb}
+      
+    \end{mysolution}
+
+  \end{parts}
+
+
+
+\end{questions}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

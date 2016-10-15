@@ -1,0 +1,189 @@
+%% HOW TO USE THIS TEMPLATE:
+%%
+%% Ensure that you replace "YOUR NAME HERE" with your own name, in the
+%% \studentname command below.  Also ensure that the "answers" option
+%% appears within the square brackets of the \documentclass command,
+%% otherwise latex will suppress your solutions when compiling.
+%% 
+%% Type your solution to each problem part within
+%% the \begin{mysolution} \end{mysolution} environment immediately
+%% following it.  Use any of the macros or notation from the
+%% header.tex that you need, or use your own (but try to stay
+%% consistent with the notation used in the problem).
+%%
+%% If you have problems compiling this file, you may lack the
+%% header.tex file (available on the course web page), or your system
+%% may lack some LaTeX packages.  The "exam" package (required) is
+%% available at:
+%%
+%% http://mirror.ctan.org/macros/latex/contrib/exam/exam.cls
+%%
+%% Other packages can be found at ctan.org, or you may just comment
+%% them out (only the exam and ams* packages are absolutely required).
+
+
+% the "answers" option causes the solutions to be printed
+%\documentclass[11pt,addpoints]{exam}
+\documentclass[11pt,addpoints,answers]{exam}
+
+%\input{hw4sol}
+
+% required macros -- get header.tex file from course web page
+\input{header}
+
+% VARIABLES
+
+\newcommand{\hwnum}{4}
+\newcommand{\duedate}{Oct 17} % changing this does not change the
+                                % actual due date :)
+\newcommand{\studentname}{YOUR NAME HERE}
+
+% END OF SUPPLIED VARIABLES
+
+\hwheader                       % execute homework commands
+
+\begin{document}
+
+\pagestyle{head}                % put header on every page
+
+\duetext
+
+\instructionstext
+
+% QUESTIONS START HERE.  PROVIDE SOLUTIONS WITHIN THE "solution"
+% ENVIRONMENTS FOLLOWING EACH QUESTION.
+
+\begin{questions}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+  \question[3] \emph{(Rabin's permutation)}
+	  Assume $p,q \equiv 3  \pmod 4$. Does Rabin's function remain one way when its domain is restricted to $\QRN^*$ (and so becomes
+		a one way \emph{permutation})?
+    \begin{mysolution}{solrabin}
+     Yes, it does. Suppose that restricting Rabin's function to be a permutation made it so that it is no longer one way. Let $A$
+      be the inversion algorithm for the one-way permutation that succeeds with probability P (non-negligible). Let $y=A(x^2)$. clearly if y was a successfl inversion in the restricted domain, then $y \in \sqrt{x^2}$ in the unrestricted comain, and is therefore also a success. If the inversion was a failure in the restricted domain, it is possible that the inversion yielded a different root of x than the one that is a quadratic residue, and thus it could still be a success in the unrestricted case. Since the probability of success in the unrestricted case is at least as great as the probability in the restricted case, the easiness of inverting Rabin's Permutation clearly implies the easiness of inverting Rabin's Function. Since Rabin's function is one-way, Rabin's permutation must also be one-way.
+       \end{mysolution}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+  \question \emph{(PRGs.)\footnote{A question from Peikert's class\label{fn:peikert}}}  Prove or
+  disprove (giving the simplest counterexample you can find) the
+  following statements.  In constructing a counterexample, you may
+  assume the existence of another OWF / PRG.
+
+  \begin{parts}
+        \part[4] Let $G$ be a PRG with output length $\ell(n) > n$.  The
+    function $G'(s) = G(s) \oplus (s | 0^{\ell(\len{s})-\len{s}})$ is
+    a PRG, where $|$ denotes concatenation.
+    \hint{99102} 
+    \begin{mysolution}{solprgsa}
+      No, not necessarily. Consider the following counterexample: suppose we have a function G that is based on Rabin's permutation, such that $(G(x) = (f(x), \oplus_{i=1}{n} x_i)$. We claim that this is a pseudorandom generator. Clearly the outputs a string of length n+1>n, so we just need to show that there is no PPT distinguisher D that suceeds with non-negligible probability. I claim that the existence of a such a distinguisher implies the existence of a PPT inversion algorithm A that succeeds in inverting Rabin's permutation with noticable probability.  We can construct A as follows: whenever $D=1$, 
+    \end{mysolution}
+
+    \part[5] A PRG $G$ with output length $\ell(n) = 2n$ is itself a
+    one-way function.  \hint{15489} 
+    \begin{mysolution}{solprgsb}
+      Let $G: {0,1}^n \to {0,1}^{2n}$ be our PRG.
+       Now suppose for contradiction that G is not a one-way function. Then there exists some PPT inversion algorithm $A$ such that $\Pr_{x \in \bit^n} [ A(1^n, G(x)) \in G^{-1}(G(x)) ] = \frac{1}{poly(n)}$.
+         I claim that this inversion algorithm allows us to construct a PPT distinguisher algorithm, $D$. To construct such an algorithm, we could, given some y sample from either G or the uniform distribution, calculate $x^{`} = A(y)$, and then test to see whether $G(x^{`}) = y$, 
+         with D outputting 1 if there is a success, and 0 otherwise. Note that the Im(g) constitutes a fraction of $2^{|s|-l(|s|)}$ of the possible strings in our range, so if the string given to the distinguisher is from the uniform distribution, this is the probability that it is in Im(G). Consider what happens if we are given a sample $s \not \in Im(G)$. 
+         Either the inversion algorithm is not defined for that input, outputs an incorrect answer, or the null set -- but in any case, we can be sure that $G(x^{`}) \neq y$. 
+         Thus \newline $P[D(G(s))=1] = \frac{1}{poly(n)}$, while  
+         \newline $P[D(u)=1] = P[D(u)=1|u \in Im(G)]*P[u \in Im(G)] +  P[D(u)=1|u \not \in Im(G)]*P[u \not \in Im(G)]$
+          \newline $= \frac{1}{poly(n)} * 2^{|s|-l(|s|)} +  0$. 
+          \newline Thus $|P[D(G(s))=1] - P[D(u)=1] | = \frac{1}{poly(n)} (1-2^{|s|-l(|s|)})$, which is not a negligible function. This contradicts the fact that G is a PRG, and therefore implies that G is a one-way function.
+    \end{mysolution}
+
+    \part[4] (extra credit) A PRG $G$ with output length $\ell(n) = n+1$ is itself a
+    one-way function. \hintcost{19634}{1} 
+
+    \begin{mysolution}{solprgsc}
+      
+    \end{mysolution}
+
+  \end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \question
+	\begin{parts}
+
+	  \part[2] \emph{(Computing square roots efficiently modulo prime)}
+		Let $p>2$ be a prime. Assume we are given a quadratic residue $x \in \Z_p^*$ and we wish to compute its
+		(two) square roots. Show that when $p \equiv 3 \bmod 4$, this can be done efficiently by computing
+		$\pm x^{(p+1)/4}$, a formula due to Lagrange. 
+		(The case $p \equiv 5 \bmod 8$ is a bit more difficult; the case of a general prime can also be done efficiently but is more involved; 
+		feel free to look it up and summarize it here!)
+	  
+    \begin{mysolution}{solsquarerootprimea}
+      If $p \equiv 3 \bmod 4$, then we know that $\frac{p+1}{4}$ is an integer. And since x is a quadratic residue, we know (from homework 0) that $x^{\frac{p-1}{2}}=1$. Multiplying both sides by x, we have $x^{\frac{p+1}{2}} = x$. Now we can take the sqaure root of both sides, giving  $\sqrt{x} = \pm x^{(p+1)/4}$. It was crucial here that $\frac{p+1}{4}$ is an integer, so that the exponent is well-defined. Note that we can compute this exponent efficiently using the same technique outlined in homework 0. Finally, we can simply take the inverse of the result in order to computethe other square root, which can also be done very efficiently.
+    \end{mysolution}
+
+	
+	\part[4] \emph{(LSB is not hard.\cref{fn:peikert})}
+	  Show how given a prime $p>2$, a generator $g$ of $\Z_p^*$, and $g^{x} \bmod p$
+		for an unknown $x \in
+    \set{0, \ldots, p-2}$, we can efficiently decide if $x$ is odd.
+		(This shows that ``least significant bit'' $[x \text{ is odd}]$ is
+    \emph{not} a hard-core predicate for the modular
+    exponentiation function $f_{p,g}(x) = g^{x} \bmod p$.)
+
+    \begin{mysolution}{solsquarerootprimeb}
+      if x is prime, then it ca be written as a product of odd primes: $x = p_1 * ... * p_k$. Note that since $\frac{x}{2}$ is an integer if and only if $g^{x}=a$ is a quadratic residue. As discussed in homework 0, we can compute whether x is a quadratic residue by testing whether $x^{\frac{p-1}{2}}=1$, which can be done efficiently using efficient modular exponentiation as described in homework 0. Therefore the problem of determining the least significant bit is equivalent to the problem of finding quadratic residuosity, which is not hard when we have a prime modulus.
+    \end{mysolution}
+  \part[2]
+	  Here is a sketch of an attempt to efficiently compute discrete logs (a problem believed to be hard). Complete the missing details and identify the bug. 
+		
+		We are given $y=g^x \bmod p$ for an unknown $x \in \{0,\ldots,p-2\}$. Write $x = \sum_{j=0}^{\ceil{\log p}} 2^j b_j$
+		in its binary expansion. Efficiently find $b_0$ as above. 
+		Let $y_1 = y / g^{b_0}$ and notice that it is a quadratic residue. Compute the square root of $y_1$, and continue
+		recursively to recover all the bits of $x$.
+    \begin{mysolution}{solsquarerootprimec}
+      As noted above, we can find the least significant bit by determining whether y is a quadratic residue.  If we write y as $y =g^{\sum_{j=0}^{\ceil{\log p}} 2^j b_j} $, we can see that $y_1 = \frac{y}{g^{b_0}} = g^{\sum_{j=1}^{\ceil{\log p}} 2^j b_j} $ is the same as setting the LSB of y to 0. We claim that $y_1$ is in fact a quadratic residue. Note that if x was even, then $y_1 = \frac{y}{g^{b_0}}=y$, and we know that y is a quadratic residue from the previous problem, so $y_1$ is also a quadratic residue. If x is odd, then $y_1 = \frac{y}{g^{b_0}} = \frac{y}{g}$. In other words, we subtract 1 from the exponent x, so that it becomes even, and therefore $y_1$ is a quadratic residue. Thus $y_1$ is a quadratic residue. Now, taking the square root of $y_1$ is the same thing as dividing the exponent by two, which in binary representation is the same as shifting all of the bits of x to the right. Denote this new exponent with its bits shifted to the right as $x_1$. Then we can repeat this process starting with $x_1$ and $y_1$ in order to find the LSB of $x_1$, which is the second bit in our original exponent x, and continue with this process to recover successive bits of x. However, the bug is that there are two square roots of $y_1$ at each step, and in reality only one of them is equivalent to dividing the exponent by two (instead, it yields $g^{p-1-\frac{x}{2}}$. How do we know which one is which? (Needs completion)
+  \end{mysolution}
+
+  \end{parts}
+	
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \question[2]$^\clubsuit$ \emph{(Using hard core predicates to construct PRGs)}
+    We say that an efficiently computable function $h:\bit^* \to \bit$ is \emph{hard-core} for a function $f$ if for all non-uniform PPT 
+		algorithms $\calA$, 
+		\[
+		   \Pr_{x \leftarrow \bit^n}[\calA(f(x))=h(x)] \le \frac{1}{2}+\negl(n)\;.
+		\]
+		Assume we're able to show that a certain $h$ is hard-core for a one-way \emph{permutation} $f$. 
+		Suggest a way to construct a PRG from $f$ and $h$, and try to think what the 
+		analysis would entail. (We'll do the analysis in class and in the next homework.)
+		    
+    \begin{mysolution}{solhardcoreprg}
+      The definition aboe essentially means that h ``appears random''. Therefore, we might consider a function $G(x) = (x , h(x))$ to be a pseudorandom generator, since all of the bits appear random, and we have an expansion factor of 1. There are some slight issues with this construction as illustrated by the book -- notably that f being one way does not necessarily mean that it hides all of the bits x. However, the basic idea is there.
+    \end{mysolution}
+
+
+\end{questions}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
